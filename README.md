@@ -1,10 +1,9 @@
 # lucky-pet-mall-api
 LuckyPet宠物医院商城系统后台
-=======
+
 <p align="center">
-	<img alt="logo" src="https://oscimg.oschina.net/oscnet/up-d3d0a9303e11d522a06cd263f3079027715.png">
 </p>
-<h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">qgj v3.8.2</h1>
+<h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">LuckyPet v1.0</h1>
 <h4 align="center">基于SpringBoot+Vue前后端分离的Java快速开发框架</h4>
 <p align="center">
 </p>
@@ -40,3 +39,5 @@ LuckyPet宠物医院商城系统后台
 
 ## 在线体验
 
+=======
+>>>>>>> cf0e9fa961e73cd6b59abd338577a169fedf1112
