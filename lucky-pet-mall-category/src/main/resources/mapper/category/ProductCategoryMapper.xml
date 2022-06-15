@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lucky.pet.category.mapper.ProductCategoryMapper">
+    
+    <resultMap type="ProductCategory" id="ProductCategoryResult">
+        <result property="categoryId"    column="category_id"    />
+        <result property="categoryName"    column="category_name"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="sort"    column="sort"    />
+        <result property="pStatus"    column="p_status"    />
+        <result property="iconPc"    column="icon_pc"    />
+        <result property="iconApp"    column="icon_app"    />
+        <result property="picture"    column="picture"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="total"    column="total"    />
+    </resultMap>
+
+    <sql id="selectProductCategoryVo">
+        select category_id, category_name, parent_id, sort, p_status, icon_pc, icon_app, picture, update_time, create_time, total from product_category
+    </sql>
+
+    <select id="selectProductCategoryList" parameterType="ProductCategory" resultMap="ProductCategoryResult">
+        <include refid="selectProductCategoryVo"/>
+        <where>  
+            <if test="categoryName != null  and categoryName != ''"> and category_name like concat('%', #{categoryName}, '%')</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+            <if test="pStatus != null "> and p_status = #{pStatus}</if>
+            <if test="iconPc != null  and iconPc != ''"> and icon_pc = #{iconPc}</if>
+            <if test="iconApp != null  and iconApp != ''"> and icon_app = #{iconApp}</if>
+            <if test="picture != null  and picture != ''"> and picture = #{picture}</if>
+            <if test="total != null  and total != ''"> and total = #{total}</if>
+        </where>
+    </select>
+    
+    <select id="selectProductCategoryByCategoryId" parameterType="Long" resultMap="ProductCategoryResult">
+        <include refid="selectProductCategoryVo"/>
+        where category_id = #{categoryId}
+    </select>
+        
+    <insert id="insertProductCategory" parameterType="ProductCategory" useGeneratedKeys="true" keyProperty="categoryId">
+        insert into product_category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="categoryName != null and categoryName != ''">category_name,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="sort != null">sort,</if>
+            <if test="pStatus != null">p_status,</if>
+            <if test="iconPc != null">icon_pc,</if>
+            <if test="iconApp != null">icon_app,</if>
+            <if test="picture != null">picture,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="total != null">total,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="categoryName != null and categoryName != ''">#{categoryName},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="pStatus != null">#{pStatus},</if>
+            <if test="iconPc != null">#{iconPc},</if>
+            <if test="iconApp != null">#{iconApp},</if>
+            <if test="picture != null">#{picture},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="total != null">#{total},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProductCategory" parameterType="ProductCategory">
+        update product_category
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="categoryName != null and categoryName != ''">category_name = #{categoryName},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="pStatus != null">p_status = #{pStatus},</if>
+            <if test="iconPc != null">icon_pc = #{iconPc},</if>
+            <if test="iconApp != null">icon_app = #{iconApp},</if>
+            <if test="picture != null">picture = #{picture},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="total != null">total = #{total},</if>
+        </trim>
+        where category_id = #{categoryId}
+    </update>
+
+    <delete id="deleteProductCategoryByCategoryId" parameterType="Long">
+        delete from product_category where category_id = #{categoryId}
+    </delete>
+
+    <delete id="deleteProductCategoryByCategoryIds" parameterType="String">
+        delete from product_category where category_id in 
+        <foreach item="categoryId" collection="array" open="(" separator="," close=")">
+            #{categoryId}
+        </foreach>
+    </delete>
+</mapper>

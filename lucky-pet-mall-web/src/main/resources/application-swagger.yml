@@ -1,0 +1,37 @@
+knif1e4j:
+  enable: true
+  setting:
+    language: zh-CN
+    enableDocumentManage: true
+    swaggerModelName: 实体类列表
+    enableVersion: false
+    enableReloadCacheParameter: false
+    enableAfterScript: true
+    enableFilterMultipartApiMethodType: POST
+    enableFilterMultipartApis: false
+    enableRequestCache: true
+    enableHost: false
+    enableHostText: 192.168.0.193:8000
+    enableHomeCustom: true
+    homeCustomLocation: classpath:markdown/home.md
+    enableSearch: false
+    enableFooter: false
+    enableFooterCustom: true
+    footerCustomContent: Lucky-Pet-宠物医院商城
+    enableDynamicParameter: false
+    enableDebug: true
+    enableOpenApi: false
+    enableGroup: true
+    enableSwaggerModels: true
+  basic:
+    enable: true
+    # Basic认证用户名
+    username: admin
+    # Basic认证密码
+    password: 000
+# Swagger配置
+swagger:
+  # 是否开启swagger
+  enabled: true
+  # 请求前缀
+  pathMapping: /dev-api
