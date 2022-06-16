@@ -3,12 +3,14 @@ package com.lucky.pet.common.core.domain;
 import java.util.HashMap;
 import com.lucky.pet.common.constant.HttpStatus;
 import com.lucky.pet.common.utils.StringUtils;
+import io.swagger.annotations.ApiModel;
 
 /**
  * 操作消息提醒
  *
  * @author qgj
  */
+@ApiModel("全局返回体")
 public class AjaxResult extends HashMap<String, Object>
 {
     private static final long serialVersionUID = 1L;

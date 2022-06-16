@@ -109,7 +109,6 @@ public class FileUploadUtils
         }
 
         assertAllowed(file, allowedExtension);
-
         String fileName = extractFilename(file);
 
         String absPath = getAbsoluteFile(baseDir, fileName).getAbsolutePath();

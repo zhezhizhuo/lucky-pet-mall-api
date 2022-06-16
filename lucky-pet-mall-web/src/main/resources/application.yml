@@ -47,7 +47,7 @@ spring:
     basename: i18n/messages
   #    多配置文件允许
   profiles:
-    active: druid,swagger
+    active: druid,swagger,upload
   # 文件上传
   servlet:
     multipart:

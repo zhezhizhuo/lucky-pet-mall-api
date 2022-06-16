@@ -11,7 +11,8 @@ public class Constants {
 
 
     public static final String[] WHITE_URL = {
-            "/doc.html"
+            "/doc.html",
+            "/common/**"
     };
 
     /**

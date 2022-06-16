@@ -23,7 +23,12 @@
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional> <!-- 表示依赖不会传递 -->
         </dependency>
-
+        <!-- aliyun oss  -->
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+            <version>3.10.2</version>
+        </dependency>
         <!-- swagger3-->
 <!--        <dependency>-->
 <!--            <groupId>io.springfox</groupId>-->

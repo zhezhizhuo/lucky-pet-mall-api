@@ -1,0 +1,5 @@
+alibaba-upload:
+  endpoint: http://oss-accelerate.aliyuncs.com
+  accessKey: LTAI5tQeq5dr7L7BT2LXK2ud
+  accessKeySecret: chitHaU09LBvjSC1UtQ0yxx8MOXymq
+  bucketName: luck-pet

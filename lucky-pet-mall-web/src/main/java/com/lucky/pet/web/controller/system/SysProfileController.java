@@ -1,5 +1,6 @@
 package com.lucky.pet.web.controller.system;
 
+import com.lucky.pet.web.core.config.AsyncConfig;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,8 @@ import com.lucky.pet.common.utils.file.FileUploadUtils;
 import com.lucky.pet.common.utils.file.MimeTypeUtils;
 import com.lucky.pet.framework.web.service.TokenService;
 import com.lucky.pet.system.service.ISysUserService;
+
+import javax.annotation.Resource;
 
 /**
  * 个人信息 业务处理
@@ -117,6 +120,10 @@ public class SysProfileController extends BaseController
         }
         return AjaxResult.error("修改密码异常，请联系管理员");
     }
+    @Resource
+    private AsyncConfig asyncConfig;
+
+    private static final  String BaseUrl="https://luck-pet.oss-cn-guangzhou.aliyuncs.com/";
 
     /**
      * 头像上传
@@ -128,13 +135,16 @@ public class SysProfileController extends BaseController
         if (!file.isEmpty())
         {
             LoginUser loginUser = getLoginUser();
-            String avatar = FileUploadUtils.upload(LuckyPetConfig.getAvatarPath(), file, MimeTypeUtils.IMAGE_EXTENSION);
-            if (userService.updateUserAvatar(loginUser.getUsername(), avatar))
+            // 上传并返回新文件名称
+            FileUploadUtils.assertAllowed(file, MimeTypeUtils.DEFAULT_ALLOWED_EXTENSION);
+            String fileNewName = FileUploadUtils.extractFilename(file);
+            asyncConfig.asyncLoadUpFile(fileNewName,file.getInputStream());
+            if (userService.updateUserAvatar(loginUser.getUsername(), fileNewName))
             {
                 AjaxResult ajax = AjaxResult.success();
-                ajax.put("imgUrl", avatar);
+                ajax.put("imgUrl", BaseUrl+fileNewName);
                 // 更新缓存用户头像
-                loginUser.getUser().setAvatar(avatar);
+                loginUser.getUser().setAvatar(BaseUrl+fileNewName);
                 tokenService.setLoginUser(loginUser);
                 return ajax;
             }
