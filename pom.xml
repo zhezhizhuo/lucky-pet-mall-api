@@ -32,7 +32,7 @@
         <poi.version>4.1.2</poi.version>
         <velocity.version>2.3</velocity.version>
         <jwt.version>0.9.1</jwt.version>
-        <Knife4j.version>3.0.3</Knife4j.version>
+        <Knife4j.version>3.0.2</Knife4j.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -47,6 +47,15 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+<!--            &lt;!&ndash; knife4j的依赖配置&ndash;&gt;-->
+<!--                <dependency>-->
+<!--                    <groupId>com.github.xiaoymin</groupId>-->
+<!--                    <artifactId>knife4j-dependencies</artifactId>-->
+<!--                    <version>3.0.2</version>-->
+<!--                    <type>pom</type>-->
+<!--                    <scope>import</scope>-->
+<!--                </dependency>-->
 
             <!-- 阿里数据库连接池 -->
             <dependency>
@@ -201,6 +210,13 @@
                 <artifactId>lucky-pet-mall-category</artifactId>
                 <version>${lucky.pet.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.lucky.pet</groupId>
+                <artifactId>lucky-pet-mall-home</artifactId>
+                <version>${lucky.pet.version}</version>
+
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -212,6 +228,7 @@
         <module>lucky-pet-mall-generator</module>
         <module>lucky-pet-mall-system</module>
         <module>lucky-pet-mall-category</module>
+        <module>lucky-pet-mall-home</module>
     </modules>
     <packaging>pom</packaging>
 

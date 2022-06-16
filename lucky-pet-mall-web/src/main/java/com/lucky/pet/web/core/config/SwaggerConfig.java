@@ -12,9 +12,12 @@ import org.springframework.context.annotation.Configuration;
 import com.lucky.pet.common.config.LuckyPetConfig;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.auth.In;
+import org.springframework.context.annotation.Import;
+import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.oas.annotations.EnableOpenApi;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
@@ -25,7 +28,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 import javax.annotation.Resource;
 
@@ -35,35 +37,38 @@ import javax.annotation.Resource;
  * @author qgj
  */
 @Configuration
-@EnableKnife4j
-public class SwaggerConfig
-{
-    /** 系统基础配置 */
+@EnableOpenApi
+@Import(BeanValidatorPluginsConfiguration.class)
+public class SwaggerConfig {
+    /**
+     * 系统基础配置
+     */
     @Resource
     private LuckyPetConfig LuckyPetConfig;
 
-    /** 是否开启swagger */
-    @Value("${swagger.enabled}")
+    /**
+     * 是否开启swagger
+     */
+    @Value("${knife4j.enable}")
     private boolean enabled;
 
     /** 设置请求的统一前缀 */
-    @Value("${swagger.pathMapping}")
-    private String pathMapping;
+//    @Value("${swagger.pathMapping}")
+//    private String pathMapping;
     /**
      *   //在构建 Docket 对象后可开启增强模式扩展插件，比如本示例中的自定义文档。
      */
-
 
 
     /**
      * 创建API
      */
     @Bean
-    public Docket createRestApi()
-    {
+    public Docket createRestApi() {
         return new Docket(DocumentationType.OAS_30)
                 // 构建扩展插件-自定义文档 group
                 .groupName("系统文档")
+
                 // 是否启用Swagger
                 .enable(enabled)
                 // 用来创建该API的基本信息，展示在文档的页面中（自定义展示的信息）
@@ -79,15 +84,14 @@ public class SwaggerConfig
                 .build()
                 /* 设置安全模式，swagger可以设置访问token */
                 .securitySchemes(securitySchemes())
-                .securityContexts(securityContexts())
-                .pathMapping(pathMapping);
+                .securityContexts(securityContexts());
+//                .pathMapping(pathMapping);
     }
 
     /**
      * 安全模式，这里指定token通过Authorization头请求头传递
      */
-    private List<SecurityScheme> securitySchemes()
-    {
+    private List<SecurityScheme> securitySchemes() {
         List<SecurityScheme> apiKeyList = new ArrayList<SecurityScheme>();
         apiKeyList.add(new ApiKey("Authorization", "Authorization", In.HEADER.toValue()));
         return apiKeyList;
@@ -96,8 +100,7 @@ public class SwaggerConfig
     /**
      * 安全上下文
      */
-    private List<SecurityContext> securityContexts()
-    {
+    private List<SecurityContext> securityContexts() {
         List<SecurityContext> securityContexts = new ArrayList<>();
         securityContexts.add(
                 SecurityContext.builder()
@@ -110,8 +113,7 @@ public class SwaggerConfig
     /**
      * 默认的安全上引用
      */
-    private List<SecurityReference> defaultAuth()
-    {
+    private List<SecurityReference> defaultAuth() {
         AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
@@ -119,17 +121,17 @@ public class SwaggerConfig
         securityReferences.add(new SecurityReference("Authorization", authorizationScopes));
         return securityReferences;
     }
+
     /**
      * 添加摘要信息
      */
-    private ApiInfo apiInfo()
-    {
+    private ApiInfo apiInfo() {
         // 用ApiInfoBuilder进行定制
         return new ApiInfoBuilder()
                 // 设置标题
-                .title("Lucky-Pet-宠物医院商系统_接口文档")
+                .title("Lucky-Pet医院商城系统_接口文档")
                 // 描述
-                .description("Lucky-Pet-宠物医院商系统,具体包括商品分类,宠物模块...")
+                .description("Lucky-Pet医院商城系统,具体包括商品分类,宠物模块...")
                 // 作者信息
                 .contact(new Contact("Lucky-Pet", "http://127.0.0.1:8004/", "www.2455693921@qq.com"))
                 // 版本
