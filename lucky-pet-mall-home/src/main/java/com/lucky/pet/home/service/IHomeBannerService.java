@@ -2,6 +2,7 @@ package com.lucky.pet.home.service;
 
 import java.util.List;
 import com.lucky.pet.common.core.domain.entity.HomeBanner;
+import com.lucky.pet.common.core.domain.vo.PcBanner;
 
 /**
  * 轮播图片Service接口
@@ -58,4 +59,10 @@ public interface IHomeBannerService
      * @return 结果
      */
     public int deleteHomeBannerById(Long id);
+
+    /**
+     * 获取轮播图信息
+     * @return
+     */
+    List<PcBanner> getPcBanner();
 }

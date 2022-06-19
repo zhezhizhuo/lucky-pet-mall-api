@@ -1,6 +1,7 @@
 package com.lucky.pet.home.mapper;
 import java.util.List;
 import com.lucky.pet.common.core.domain.entity.HomeBanner;
+import com.lucky.pet.common.core.domain.vo.PcBanner;
 
 /**
  * 轮播图片Mapper接口
@@ -58,4 +59,6 @@ public interface HomeBannerMapper
      * @return 结果
      */
     public int deleteHomeBannerByIds(Long[] ids);
+
+    List<PcBanner> getBanner();
 }

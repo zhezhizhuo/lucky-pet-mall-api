@@ -1,6 +1,11 @@
 package com.lucky.pet.category.service.impl;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import com.lucky.pet.common.core.domain.TreeSelect;
 import com.lucky.pet.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -92,5 +97,65 @@ public class ProductCategoryServiceImpl implements IProductCategoryService
     public int deleteProductCategoryByCategoryId(Long categoryId)
     {
         return productCategoryMapper.deleteProductCategoryByCategoryId(categoryId);
+    }
+
+    @Override
+    public List<TreeSelect> buildCategoryTreeSelect(List<ProductCategory> categories) {
+            List<ProductCategory> build   =buildCategoryTree(categories);
+        return build.stream().map(TreeSelect::new).collect(Collectors.toList());
+    }
+
+    private List<ProductCategory> buildCategoryTree(List<ProductCategory> categories) {
+        List<ProductCategory> returnList = new ArrayList<ProductCategory>();
+
+        List<Long> tempList = new ArrayList<Long>();
+        for (ProductCategory category : categories)
+        {
+            tempList.add(category.getCategoryId());
+        }
+        for (Iterator<ProductCategory> iterator = categories.iterator(); iterator.hasNext();)
+        {
+            ProductCategory categoryBean = (ProductCategory) iterator.next();
+            // 如果是顶级节点, 遍历该父节点的所有子节点
+            if (!tempList.contains(Long.valueOf(categoryBean.getParentId())))
+            {
+                recursionFn(categories, categoryBean);
+                returnList.add(categoryBean);
+            }
+        }
+        if (returnList.isEmpty())
+        {
+            returnList = categories;
+        }
+        return returnList;
+    }
+
+    private List<ProductCategory> recursionFn(List<ProductCategory> categorys, ProductCategory categoryBean) {
+        List<ProductCategory> childList= getChildList(categorys, categoryBean);
+        categoryBean.setChildren(childList);
+
+        for (ProductCategory bean : childList) {
+            if(hasChild(childList,bean)){
+                recursionFn(categorys,bean);
+            }
+        }
+        return childList;
+    }
+
+    private boolean hasChild(List<ProductCategory> childList, ProductCategory bean) {
+        return getChildList(childList, bean).size() > 0;
+    }
+    private List<ProductCategory> getChildList(List<ProductCategory> categorys, ProductCategory categoryBean) {
+        List<ProductCategory> tlist = new ArrayList<ProductCategory>();
+        Iterator<ProductCategory> it = categorys.iterator();
+        while (it.hasNext())
+        {
+            ProductCategory n = (ProductCategory) it.next();
+            if (n.getParentId().equals( categoryBean.getCategoryId()))
+            {
+                tlist.add(n);
+            }
+        }
+        return tlist;
     }
 }

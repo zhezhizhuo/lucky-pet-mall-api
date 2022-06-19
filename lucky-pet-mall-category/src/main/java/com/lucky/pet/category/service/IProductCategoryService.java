@@ -1,6 +1,8 @@
 package com.lucky.pet.category.service;
 
 import java.util.List;
+
+import com.lucky.pet.common.core.domain.TreeSelect;
 import com.lucky.pet.common.core.domain.entity.ProductCategory;
 
 /**
@@ -58,4 +60,6 @@ public interface IProductCategoryService
      * @return 结果
      */
     public int deleteProductCategoryByCategoryId(Long categoryId);
+
+    List<TreeSelect> buildCategoryTreeSelect(List<ProductCategory> categories);
 }

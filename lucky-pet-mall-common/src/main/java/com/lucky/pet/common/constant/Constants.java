@@ -10,9 +10,19 @@ import io.jsonwebtoken.Claims;
 public class Constants {
 
 
+    /**
+     *    轮播图的缓存 key
+     */
+    public static  final  String BANNER_KEY ="home:banner:key";
+
+
+    /**
+     * 白名单接口
+     */
     public static final String[] WHITE_URL = {
             "/doc.html",
-            "/common/**"
+            "/common/**",
+            "/pc/**",
     };
 
     /**

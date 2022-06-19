@@ -17,13 +17,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class HomeBanner extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
-
     /** ID */
-    @ApiModelProperty("${comment}")
+    @ApiModelProperty(hidden = true)
     private Long id;
 
     /** 跳转商品 */
-    @ApiModelProperty("${comment}")
+    @ApiModelProperty("跳转商品")
     private Long pid;
 
     /** 跳转地址 */

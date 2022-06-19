@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import com.lucky.pet.common.annotation.Excel;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 商品类目对象 product_category
@@ -64,10 +65,21 @@ public class ProductCategory {
     @ApiModelProperty("更新时间 ")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
+
     @Excel(name = "创建时间")
     @ApiModelProperty("创建时间 ")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
+
+    private List<ProductCategory> children;
+
+    public List<ProductCategory> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<ProductCategory> children) {
+        this.children = children;
+    }
 
     /**
      * app端icon

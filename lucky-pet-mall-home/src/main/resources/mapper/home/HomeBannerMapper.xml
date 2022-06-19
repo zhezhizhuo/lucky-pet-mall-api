@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lucky.pet.home.mapper.HomeBannerMapper">
-    
+
     <resultMap type="HomeBanner" id="HomeBannerResult">
         <result property="id"    column="id"    />
         <result property="pid"    column="pid"    />
@@ -20,18 +20,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectHomeBannerList" parameterType="HomeBanner" resultMap="HomeBannerResult">
         <include refid="selectHomeBannerVo"/>
-        <where>  
+        <where>
             <if test="hrefurl != null  and hrefurl != ''"> and hrefUrl = #{hrefurl}</if>
             <if test="sort != null "> and sort = #{sort}</if>
             <if test="imgurl != null  and imgurl != ''"> and imgUrl = #{imgurl}</if>
         </where>
     </select>
-    
+
     <select id="selectHomeBannerById" parameterType="Long" resultMap="HomeBannerResult">
         <include refid="selectHomeBannerVo"/>
         where id = #{id}
     </select>
-        
+
     <insert id="insertHomeBanner" parameterType="HomeBanner" useGeneratedKeys="true" keyProperty="id">
         insert into home_banner
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -70,9 +70,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteHomeBannerByIds" parameterType="String">
-        delete from home_banner where id in 
+        delete from home_banner where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
+
+    <select id="getBanner" resultType="com.lucky.pet.common.core.domain.vo.PcBanner" useCache="true">
+        select  pid, hrefUrl, imgUrl   from home_banner order by sort
+    </select>
 </mapper>

@@ -46,12 +46,22 @@ public class ProductCategoryController extends BaseController {
     @PreAuthorize("@ss.hasPermi('category:category:list')")
     @ApiOperationSupport(includeParameters = {"createBy","createTime","updateTime","total","searchValue",})
     @GetMapping("/list")
-    public TableDataInfo list(ProductCategory productCategory) {
-        startPage();
+    public AjaxResult list(ProductCategory productCategory) {
         List<ProductCategory> list = productCategoryService.selectProductCategoryList(productCategory);
-        return getDataTable(list);
+        return AjaxResult.success(list);
     }
 
+    /**
+     * 获取商品类目的下拉树列表
+     */
+    @ApiOperation(value = "查询商品类目列表")
+    @PreAuthorize("@ss.hasPermi('category:category:list')")
+    @ApiOperationSupport(includeParameters = {"createBy","createTime","updateTime","total","searchValue",})
+    @GetMapping("/treeselect")
+    public AjaxResult treeselect(ProductCategory productCategory) {
+        List<ProductCategory> categories = productCategoryService.selectProductCategoryList(productCategory);
+        return AjaxResult.success(productCategoryService.buildCategoryTreeSelect(categories));
+    }
     /**
      * 导出商品类目列表
      */

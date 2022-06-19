@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.lucky.pet.common.core.domain.entity.ProductCategory;
 import com.lucky.pet.common.core.domain.entity.SysDept;
 import com.lucky.pet.common.core.domain.entity.SysMenu;
 
@@ -36,6 +37,13 @@ public class TreeSelect implements Serializable
         this.id = dept.getDeptId();
         this.label = dept.getDeptName();
         this.children = dept.getChildren().stream().map(TreeSelect::new).collect(Collectors.toList());
+    }
+
+    public TreeSelect(ProductCategory categoryBean)
+    {
+        this.id = categoryBean.getCategoryId();
+        this.label = categoryBean.getCategoryName();
+        this.children = categoryBean.getChildren().stream().map(TreeSelect::new).collect(Collectors.toList());
     }
 
     public TreeSelect(SysMenu menu)

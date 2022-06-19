@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.aliyun.oss.OSS;
+import com.aliyun.oss.ServiceException;
 import com.aliyun.oss.model.PutObjectRequest;
 import com.aliyun.oss.model.PutObjectResult;
 import com.lucky.pet.common.utils.file.MimeTypeUtils;
@@ -91,6 +92,9 @@ public class CommonController {
    })
     public AjaxResult uploadFile(@ApiParam(name = "file",required=true) MultipartFile file) throws Exception {
         try {
+            if (file==null){
+                throw new ServiceException("图片不为空");
+            }
             // 上传并返回新文件名称
             FileUploadUtils.assertAllowed(file, MimeTypeUtils.DEFAULT_ALLOWED_EXTENSION);
             String fileNewName = FileUploadUtils.extractFilename(file);
@@ -98,9 +102,7 @@ public class CommonController {
             //async loadUp File  Not Wait  up 100%  return
             asyncConfig.asyncLoadUpFile(fileNewName,file.getInputStream());
             // 上传文件
-
             AjaxResult ajax = AjaxResult.success();
-
             ajax.put("url", BaseUrl + fileNewName);
             ajax.put("fileName", fileNewName);
             ajax.put("newFileName", FileUtils.getName(fileNewName));

@@ -1,10 +1,13 @@
 package com.lucky.pet.common.exception;
 
+import org.springframework.web.bind.annotation.ControllerAdvice;
+
 /**
  * 全局异常
  *
  * @author qgj
  */
+
 public class GlobalException extends RuntimeException
 {
 
@@ -44,7 +47,7 @@ public class GlobalException extends RuntimeException
         this.detailMessage = detailMessage;
         return this;
     }
-
+    @Override
     public String getMessage()
     {
         return message;
