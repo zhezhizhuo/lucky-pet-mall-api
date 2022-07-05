@@ -43,7 +43,6 @@ public class HomeBannerController extends BaseController {
      */
     @ApiOperation(value = "查询轮播图片列表")
     @PreAuthorize("@ss.hasPermi('home:home:list')")
-    @ApiOperationSupport(includeParameters = {"createBy","createTime","updateTime","total","searchValue",})
     @GetMapping("/list")
     public TableDataInfo list(HomeBanner homeBanner) {
         startPage();
@@ -78,7 +77,6 @@ public class HomeBannerController extends BaseController {
      * 新增轮播图片
      */
     @ApiOperation(value = "新增轮播图片")
-    @ApiOperationSupport(includeParameters = {"ud","createBy","createTime","updateTime","searchValue",})
     @PreAuthorize("@ss.hasPermi('home:home:add')")
     @Log(title = "轮播图片", businessType = BusinessType.INSERT)
     @PostMapping
@@ -90,7 +88,6 @@ public class HomeBannerController extends BaseController {
      * 修改轮播图片
      */
     @ApiOperation(value = "修改轮播图片")
-    @ApiOperationSupport(includeParameters = {"createBy","createTime","updateTime","searchValue",})
     @PreAuthorize("@ss.hasPermi('home:home:edit')")
     @Log(title = "轮播图片", businessType = BusinessType.UPDATE)
     @PutMapping

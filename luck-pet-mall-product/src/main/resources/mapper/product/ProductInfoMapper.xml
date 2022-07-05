@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lucky.pet.product.mapper.ProductInfoMapper">
+
+    <resultMap type="ProductInfo" id="ProductInfoResult">
+        <result property="productId"    column="product_id"    />
+        <result property="productName"    column="product_name"    />
+        <result property="price"    column="price"    />
+        <result property="oldPrice"    column="old_price"    />
+        <result property="pStatus"    column="p_status"    />
+        <result property="descript"    column="descript"    />
+        <result property="categoryName"    column="category_name"    />
+        <result property="categoryId"    column="category_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="isDelete"    column="is_delete"    />
+        <result property="picture"    column="picture"    />
+    </resultMap>
+
+    <sql id="selectProductInfoVo">
+        select product_id, product_name, price, old_price, p_status, descript, category_name, category_id, create_time, is_delete, picture from product_info
+    </sql>
+
+    <select id="selectProductInfoList" parameterType="ProductInfo" resultMap="ProductInfoResult">
+        <include refid="selectProductInfoVo"/>
+        <where>
+            <if test="pStatus != null "> and p_status = #{pStatus}</if>
+
+            <if test="categoryId != null "> and category_id = #{categoryId}</if>
+            <if test="descript != null  and descript != ''"> and descript like concat('%', #{descript}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectProductInfoByProductId" parameterType="Long" resultMap="ProductInfoResult">
+        <include refid="selectProductInfoVo"/>
+        where product_id = #{productId}
+    </select>
+    <select id="selectProductListByUniappIndex" resultMap="ProductInfoResult">
+        select * from product_info where p_status = 0 order by create_time desc
+    </select>
+    <select id="selectGoodInfoByProductId"  parameterType="Long"   resultType="com.lucky.pet.common.core.domain.vo.GoodsOv">
+
+        select product_id as'id' , product_name as 'name', product_id as'spuCode', descript as 'desc', price,
+               if(price >= 35, price - 30.00, price) as 'oldPrice', picture,
+               (select COUNT(o.id) from order_item o where o.product_id = #{id}) as	'salesCount', (select COUNT(c.com_id) from product_comment c where c.p_id = #{id}) as	'commentCount', (select COUNT(s.col_id) from user_collects s where s.pid = #{id}) as	'collectCount'
+                ,
+               ((
+                    SELECT
+                        count( 0 )
+                    FROM
+                        product_comment c
+                    WHERE
+                        c.p_id = product_id
+                      AND c.score = 5
+                ) / ( SELECT count( 0 ) FROM product_comment c WHERE c.p_id = product_id )) * 100 AS 'praisePercent',
+               (
+                   SELECT
+                       if(ISNULL(s.col_id),'false','true')
+                   FROM
+                       user_collects s
+                   WHERE
+                       s.is_delete = 0
+                     AND s.user_id = #{userId}
+                     AND s.pid = #{id}
+               ) AS 'collect'
+
+        from product_info
+        where p_status = 0
+          and product_id = #{id};
+    </select>
+    <select id="selectProductImgagesByPid" resultType="com.lucky.pet.common.core.domain.entity.ProductImage">
+
+        select id, product_id, img, update_time from product_image  where product_id = #{id}
+    </select>
+    <select id="selectGoodsHotByDay" resultType="com.lucky.pet.common.core.domain.vo.GoodsHotOv">
+        SELECT p.product_id AS 'id', p.picture,
+               p.product_name AS 'name', p.descript as'desc',p.price
+        FROM product_info p       where  p_status = 0
+        ORDER BY (SELECT count(c.col_id) FROM user_collects c WHERE c.pid = p.product_id) +
+                 (SELECT count(me.p_id)
+                  FROM product_comment me
+                  WHERE p.product_id = me.p_id) desc limit 0 ,6
+
+    </select>
+    <select id="selectProductParent" resultType="com.lucky.pet.common.core.domain.vo.CategorysOv">
+        select  a.category_id as 'id' ,a.category_name as 'name' ,  a.parent_id  as'parent' from product_category a ,product_info i where a.category_id = i.category_id  and i.product_id = #{id};
+
+    </select>
+    <select id="selectCategorParent" resultType="com.lucky.pet.common.core.domain.vo.CategorysOv">
+        select  c.category_id as 'id',c.category_name as 'name' from product_category c where c.category_id = #{id};
+    </select>
+
+    <insert id="insertProductInfo" parameterType="ProductInfo" useGeneratedKeys="true" keyProperty="productId">
+        insert into product_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productName != null and productName != ''">product_name,</if>
+            <if test="price != null">price,</if>
+            <if test="oldPrice != null">old_price,</if>
+            <if test="pStatus != null">p_status,</if>
+            <if test="descript != null">descript,</if>
+            <if test="categoryName != null">category_name,</if>
+            <if test="categoryId != null">category_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="isDelete != null">is_delete,</if>
+            <if test="picture != null">picture,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productName != null and productName != ''">#{productName},</if>
+            <if test="price != null">#{price},</if>
+            <if test="oldPrice != null">#{oldPrice},</if>
+            <if test="pStatus != null">#{pStatus},</if>
+            <if test="descript != null">#{descript},</if>
+            <if test="categoryName != null">#{categoryName},</if>
+            <if test="categoryId != null">#{categoryId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+            <if test="picture != null">#{picture},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProductInfo" parameterType="ProductInfo">
+        update product_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productName != null and productName != ''">product_name = #{productName},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="oldPrice != null">old_price = #{oldPrice},</if>
+            <if test="pStatus != null">p_status = #{pStatus},</if>
+            <if test="descript != null">descript = #{descript},</if>
+            <if test="categoryName != null">category_name = #{categoryName},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+            <if test="picture != null">picture = #{picture},</if>
+        </trim>
+        where product_id = #{productId}
+    </update>
+
+    <delete id="deleteProductInfoByProductId" parameterType="Long">
+        delete from product_info where product_id = #{productId}
+    </delete>
+
+    <delete id="deleteProductInfoByProductIds" parameterType="String">
+        delete from product_info where product_id in
+        <foreach item="productId" collection="array" open="(" separator="," close=")">
+            #{productId}
+        </foreach>
+    </delete>
+</mapper>

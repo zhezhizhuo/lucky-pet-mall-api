@@ -24,7 +24,7 @@ public class ProductCategory {
     /**
      * 分类id
      */
-    @ApiModelProperty("${comment}")
+    @ApiModelProperty(value = "分类ID")
     private Long categoryId;
 
     /**
@@ -62,15 +62,15 @@ public class ProductCategory {
     private String iconPc;
 
     @Excel(name = "更新时间")
-    @ApiModelProperty("更新时间 ")
+    @ApiModelProperty(value = "更新时间",hidden = true)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     @Excel(name = "创建时间")
-    @ApiModelProperty("创建时间 ")
+    @ApiModelProperty(value = "创建时间",hidden = true)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
-
+    @ApiModelProperty("子分类")
     private List<ProductCategory> children;
 
     public List<ProductCategory> getChildren() {

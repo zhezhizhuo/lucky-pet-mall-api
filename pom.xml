@@ -215,6 +215,23 @@
                 <groupId>com.lucky.pet</groupId>
                 <artifactId>lucky-pet-mall-home</artifactId>
                 <version>${lucky.pet.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.lucky.pet</groupId>
+                <artifactId>luck-pet-mall-product</artifactId>
+                <version>${lucky.pet.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lucky.pet</groupId>
+                <artifactId>luck-pet-mall-address</artifactId>
+                <version>${lucky.pet.version}</version>
+
+            </dependency>
+            <dependency>
+                <groupId>com.lucky.pet</groupId>
+                <artifactId>luck-pet-mall-collects</artifactId>
+                <version>${lucky.pet.version}</version>
 
             </dependency>
         </dependencies>
@@ -229,6 +246,9 @@
         <module>lucky-pet-mall-system</module>
         <module>lucky-pet-mall-category</module>
         <module>lucky-pet-mall-home</module>
+        <module>luck-pet-mall-product</module>
+        <module>luck-pet-mall-collects</module>
+        <module>luck-pet-mall-address</module>
     </modules>
     <packaging>pom</packaging>
 

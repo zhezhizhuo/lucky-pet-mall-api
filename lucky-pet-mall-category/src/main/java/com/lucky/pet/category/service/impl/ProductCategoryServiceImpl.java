@@ -6,12 +6,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.lucky.pet.common.core.domain.TreeSelect;
+import com.lucky.pet.common.core.domain.vo.CategoryOv;
 import com.lucky.pet.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.lucky.pet.category.mapper.ProductCategoryMapper;
 import com.lucky.pet.common.core.domain.entity.ProductCategory;
 import com.lucky.pet.category.service.IProductCategoryService;
+
+import javax.annotation.Resource;
 
 /**
  * 商品类目Service业务层处理
@@ -22,7 +25,7 @@ import com.lucky.pet.category.service.IProductCategoryService;
 @Service
 public class ProductCategoryServiceImpl implements IProductCategoryService
 {
-    @Autowired
+    @Resource
     private ProductCategoryMapper productCategoryMapper;
 
     /**
@@ -98,6 +101,29 @@ public class ProductCategoryServiceImpl implements IProductCategoryService
     {
         return productCategoryMapper.deleteProductCategoryByCategoryId(categoryId);
     }
+    /**
+     * 获取uniapp 九宫格数据
+     * @return
+     */
+    @Override
+    public List<ProductCategory> selectCategoryNineHouseGridList() {
+        return productCategoryMapper.selectCategoryNineHouseGridList();
+    }
+    /**
+     * uniapp
+     * 查询分类下的所有商品
+     * @param
+     * @return
+     */
+    @Override
+    public List<CategoryOv> selectHomeProductCategoryList() {
+        return productCategoryMapper.selectHomeProductCategoryList();
+    }
+
+    @Override
+    public List<CategoryOv> selectHomeProductCategoryListTop() {
+        return productCategoryMapper.selectHomeProductCategoryListTop();
+    }
 
     @Override
     public List<TreeSelect> buildCategoryTreeSelect(List<ProductCategory> categories) {
@@ -151,7 +177,8 @@ public class ProductCategoryServiceImpl implements IProductCategoryService
         while (it.hasNext())
         {
             ProductCategory n = (ProductCategory) it.next();
-            if (n.getParentId().equals( categoryBean.getCategoryId()))
+
+            if (n.getParentId().equals(String.valueOf(categoryBean.getCategoryId())))
             {
                 tlist.add(n);
             }

@@ -22,7 +22,7 @@ public class Constants {
     public static final String[] WHITE_URL = {
             "/doc.html",
             "/common/**",
-            "/pc/**",
+            "/public/**",
     };
 
     /**

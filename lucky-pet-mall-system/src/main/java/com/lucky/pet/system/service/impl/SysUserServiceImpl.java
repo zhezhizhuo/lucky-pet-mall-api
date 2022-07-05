@@ -491,6 +491,11 @@ public class SysUserServiceImpl implements ISysUserService
         return userMapper.deleteUserByIds(userIds);
     }
 
+    @Override
+    public SysUser checkUserPhone(String mobile) {
+        return userMapper.checkUserPhone(mobile);
+    }
+
     /**
      * 导入用户数据
      *

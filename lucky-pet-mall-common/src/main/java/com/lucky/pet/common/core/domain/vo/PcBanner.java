@@ -8,7 +8,6 @@ import io.swagger.annotations.ApiModelProperty;
  * @createDate: 2022/6/19 19:18
  */
 @ApiModel("轮播图  数据模型")
-
 public class PcBanner {
 
     @ApiModelProperty(value = "跳转的商品ID")

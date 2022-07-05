@@ -1,6 +1,7 @@
 package com.lucky.pet.category.mapper;
 import java.util.List;
 import com.lucky.pet.common.core.domain.entity.ProductCategory;
+import com.lucky.pet.common.core.domain.vo.CategoryOv;
 
 /**
  * 商品类目Mapper接口
@@ -58,4 +59,13 @@ public interface ProductCategoryMapper
      * @return 结果
      */
     public int deleteProductCategoryByCategoryIds(Long[] categoryIds);
+    /**
+     * 获取uniapp 九宫格数据
+     * @return
+     */
+    List<ProductCategory> selectCategoryNineHouseGridList();
+
+    List<CategoryOv> selectHomeProductCategoryList();
+
+    List<CategoryOv> selectHomeProductCategoryListTop();
 }

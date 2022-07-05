@@ -60,6 +60,9 @@ spring:
     restart:
       # 热部署开关
       enabled: true
+  #jackson 返回为空 不展示
+  jackson:
+    default-property-inclusion: non-null
   # redis 配置
   redis:
     # 地址

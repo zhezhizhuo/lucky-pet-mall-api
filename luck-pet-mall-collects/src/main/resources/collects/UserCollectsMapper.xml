@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lucky.pet.collects.mapper.UserCollectsMapper">
+
+    <resultMap type="UserCollects" id="UserCollectsResult">
+        <result property="colId"    column="col_id"    />
+        <result property="pid"    column="pid"    />
+        <result property="userId"    column="user_id"    />
+        <result property="isDelete"    column="is_delete"    />
+        <result property="addTime"    column="add_time"    />
+
+        <result  property="userName" column="user_name" />
+        <result  property="productName" column="product_name" />
+        <result  property="picture" column="picture" />
+    </resultMap>
+
+    <sql id="selectUserCollectsVo">
+        select col_id, pid, user_id, is_delete, add_time from user_collects
+    </sql>
+
+    <select id="selectUserCollectsList" parameterType="UserCollects" resultMap="UserCollectsResult">
+        select f.col_id,i.product_name,s.user_name,f.is_delete,i.picture,f.add_time from user_collects f,product_info i,sys_user s where f.pid = i.product_id and f.user_id = s.user_id
+            <if test="userName != null "> and s.user_name LIKE concat('%',#{userName},'%')</if>
+            <if test="isDelete != null "> and f.is_delete = #{isDelete}</if>
+            <if test="addTime != null "> and f.add_time LIKE concat('%',  CONVERT(#{addTime},date), '%')</if>
+        order by f.add_time desc
+    </select>
+
+    <select id="selectUserCollectsByColId" parameterType="Long" resultMap="UserCollectsResult">
+        <include refid="selectUserCollectsVo"/>
+        where col_id = #{colId}
+    </select>
+    <select id="selectUserCollectListByUid" resultType="com.qgj.common.core.domain.Goods">
+        SELECT
+            c.col_id AS 'id',
+                i.product_name AS 'name',
+                i.price AS 'price',
+                i.descript AS 'desc',
+                i.picture
+        FROM
+            product_info i,
+            user_collects c
+        WHERE
+            c.pid = i.product_id   and c.is_delete =0
+          AND c.user_id = #{userId}
+
+    </select>
+    <select id="selectUserCollectListByUidandPid" resultType="com.qgj.common.core.domain.Goods">
+        SELECT
+            c.col_id AS 'id',
+            i.product_name AS 'name',
+            i.price AS 'price',
+            i.descript AS 'desc',
+            i.picture
+        FROM
+            product_info i,
+            user_collects c
+        WHERE
+            c.pid = i.product_id   and c.is_delete =0
+          AND c.user_id = #{userId} and i.product_id = #{pid}
+    </select>
+
+    <insert id="insertUserCollects" parameterType="UserCollects" useGeneratedKeys="true" keyProperty="colId">
+        insert into user_collects
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pid != null">pid,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="isDelete != null">is_delete,</if>
+            <if test="addTime != null">add_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pid != null">#{pid},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+            <if test="addTime != null">#{addTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUserCollects" parameterType="UserCollects">
+        update user_collects
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pid != null">pid = #{pid},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+            <if test="addTime != null">add_time = #{addTime},</if>
+        </trim>
+        where col_id = #{colId}
+    </update>
+
+    <delete id="deleteUserCollectsByColId" parameterType="Long">
+        delete from user_collects where col_id = #{colId}
+    </delete>
+
+    <delete id="deleteUserCollectsByColIds" parameterType="String">
+        delete from user_collects where col_id in
+        <foreach item="colId" collection="array" open="(" separator="," close=")">
+            #{colId}
+        </foreach>
+    </delete>
+
+    <update id="updateUserCollectsByPid">
+        update user_collects
+           set  is_delete = 1
+        where pid = #{pid} and user_id = #{userId}
+    </update>
+
+
+</mapper>

@@ -139,7 +139,7 @@ public class SysProfileController extends BaseController
             FileUploadUtils.assertAllowed(file, MimeTypeUtils.DEFAULT_ALLOWED_EXTENSION);
             String fileNewName = FileUploadUtils.extractFilename(file);
             asyncConfig.asyncLoadUpFile(fileNewName,file.getInputStream());
-            if (userService.updateUserAvatar(loginUser.getUsername(), fileNewName))
+            if (userService.updateUserAvatar(loginUser.getUsername(), BaseUrl+fileNewName))
             {
                 AjaxResult ajax = AjaxResult.success();
                 ajax.put("imgUrl", BaseUrl+fileNewName);

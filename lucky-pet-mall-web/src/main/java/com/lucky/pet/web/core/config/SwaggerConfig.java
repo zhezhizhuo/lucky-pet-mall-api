@@ -1,6 +1,7 @@
 package com.lucky.pet.web.core.config;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
@@ -13,21 +14,16 @@ import com.lucky.pet.common.config.LuckyPetConfig;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.auth.In;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpMethod;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.oas.annotations.EnableOpenApi;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.ApiKey;
-import springfox.documentation.service.AuthorizationScope;
-import springfox.documentation.service.Contact;
-import springfox.documentation.service.SecurityReference;
-import springfox.documentation.service.SecurityScheme;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.annotation.Resource;
 
@@ -38,6 +34,7 @@ import javax.annotation.Resource;
  */
 @Configuration
 @EnableOpenApi
+@EnableKnife4j
 @Import(BeanValidatorPluginsConfiguration.class)
 public class SwaggerConfig {
     /**
@@ -55,9 +52,17 @@ public class SwaggerConfig {
     /** 设置请求的统一前缀 */
 //    @Value("${swagger.pathMapping}")
 //    private String pathMapping;
-    /**
-     *   //在构建 Docket 对象后可开启增强模式扩展插件，比如本示例中的自定义文档。
-     */
+
+
+    private final OpenApiExtensionResolver openApiExtensionResolver;
+
+    @Autowired
+    public SwaggerConfig(OpenApiExtensionResolver openApiExtensionResolver) {
+        this.openApiExtensionResolver = openApiExtensionResolver;
+    }
+
+
+
 
 
     /**
@@ -65,10 +70,12 @@ public class SwaggerConfig {
      */
     @Bean
     public Docket createRestApi() {
+        List<Response> reqsponses = new ArrayList<>();
+//        reqsponses.add(new Response(200,"操作成功 "));
         return new Docket(DocumentationType.OAS_30)
                 // 构建扩展插件-自定义文档 group
                 .groupName("系统文档")
-
+                .globalResponses(HttpMethod.GET,reqsponses)
                 // 是否启用Swagger
                 .enable(enabled)
                 // 用来创建该API的基本信息，展示在文档的页面中（自定义展示的信息）
@@ -82,6 +89,8 @@ public class SwaggerConfig {
                 // 扫描所有 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build()
+                // 构建扩展插件-自定义文档 group
+                .extensions(openApiExtensionResolver.buildExtensions("lucky-pet-mall 1.0    "))
                 /* 设置安全模式，swagger可以设置访问token */
                 .securitySchemes(securitySchemes())
                 .securityContexts(securityContexts());

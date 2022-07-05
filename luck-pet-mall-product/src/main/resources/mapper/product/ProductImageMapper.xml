@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lucky.pet.product.mapper.ProductImageMapper">
+
+    <resultMap type="ProductImage" id="ProductImageResult">
+        <result property="id"    column="id"    />
+        <result property="productId"    column="product_id"    />
+        <result property="img"    column="img"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectProductImageVo">
+        select id, product_id, img, create_time, update_time from product_image
+    </sql>
+
+    <select id="selectProductImageList" parameterType="ProductImage" resultMap="ProductImageResult">
+        <include refid="selectProductImageVo"/>
+        <where>
+            <if test="productId != null "> and product_id = #{productId}</if>
+            <if test="img != null  and img != ''"> and img = #{img}</if>
+        </where>
+    </select>
+
+    <select id="selectProductImageById" parameterType="Long" resultMap="ProductImageResult">
+        <include refid="selectProductImageVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectProductImgByPid" resultMap="ProductImageResult">
+        <include refid="selectProductImageVo"/> where  product_id = #{productId}
+    </select>
+
+    <insert id="insertProductImage" parameterType="ProductImage" useGeneratedKeys="true" keyProperty="id">
+        insert into product_image
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productId != null">product_id,</if>
+            <if test="img != null and img != ''">img,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productId != null">#{productId},</if>
+            <if test="img != null and img != ''">#{img},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+    <insert id="insertProductImages">
+        insert into product_image    (product_id,img,update_time)          values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.productId},#{item.img},now())
+        </foreach>
+    </insert>
+
+    <update id="updateProductImage" parameterType="ProductImage">
+        update product_image
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="img != null and img != ''">img = #{img},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteProductImageById" parameterType="Long">
+        delete from product_image where id = #{id}
+    </delete>
+
+    <delete id="deleteProductImageByIds" parameterType="String">
+        delete from product_image where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteProductImgByProductId">
+        delete from product_image where product_id = #{id}
+    </delete>
+</mapper>

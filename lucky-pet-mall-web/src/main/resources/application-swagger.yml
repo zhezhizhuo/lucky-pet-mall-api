@@ -17,10 +17,11 @@ basic:
 knife4j:
   enable: true
   documents:
-    -
-      group: 系统文档
-      name: 系统文档
-      locations: classpath:markdown/*
+     -
+      group: 1.2.x
+      name: 测试自定义标题分组
+      # 某一个文件夹下所有的.md文件
+      locations: classpath:markdown/*.md
   setting:
     language: zh-CN
     enableDocumentManage: true
@@ -29,13 +30,18 @@ knife4j:
     enableVersion: true
     enableReloadCacheParameter: false
     enableAfterScript: true
+    #  #具体接口的过滤类型
     enableFilterMultipartApiMethodType: POST
+  #  针对RequestMapping的接口请求类型,在不指定参数类型的情况下,如果不过滤,默认会显示7个类型的接口地址参数,如果开启此配置,默认展示一个Post类型的接口地址
     enableFilterMultipartApis: false
+    #请求缓存
     enableRequestCache: true
-    enableHost: false
-    enableHostText: 192.168.0.193:8000
-    enableHomeCustom: true
-    homeCustomLocation: classpath:markdown/*.md
+    #开启  自定义Host
+#    enableHost: true
+#    enableHostText: "localhost:8004"
+    #自定义主页
+#    enableHomeCustom: true
+#    homeCustomLocation: classpath*:markdown/home.md
     enableSearch: false
     enableFooter: false
     enableFooterCustom: true

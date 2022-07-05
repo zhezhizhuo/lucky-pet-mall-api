@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lucky.pet.product.mapper.ProductCommentMapper">
+
+    <resultMap type="ProductComment" id="ProductCommentResult">
+        <result property="comId"    column="com_id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="pId"    column="p_id"    />
+        <result property="productName" column="product_name"/>
+        <result  property="userName" column="user_name" />
+        <result property="uId"    column="u_id"    />
+        <result property="tabs"    column="tabs"    />
+        <result property="content"    column="content"    />
+        <result property="status"    column="status"    />
+        <result property="score"    column="score"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="praiseCount"    column="praise_count"    />
+    </resultMap>
+
+    <resultMap type="CommentOv" id="CommentEntityResult">
+        <id  property="id" column="cid"/>
+        <result property="tabs"    column="tabs"    />
+        <result property="content"    column="content"    />
+        <result property="score"    column="score"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="praiseCount" column="praise_count" />
+        <result property="officialReply"    column="official_reply"    />
+        <association property="member" javaType="MemberOv">
+                <id   property="id" column="uid"/>
+                 <id   property="sex" column="sex"/>
+                <result property="nickname" column="nick_name"/>
+                <result  property="avatar" column="avatar"/>
+        </association>
+    </resultMap>
+
+
+    <sql id="selectProductCommentVo">
+        select com_id, parent_id, p_id, u_id, tabs, content, status, score, create_time, praise_count from product_comment
+    </sql>
+
+    <select id="selectProductCommentList" parameterType="ProductComment" resultMap="ProductCommentResult">
+        select com_id, parent_id, p_id ,(select a.product_name from product_info a where a.product_id = p_id) as 'product_name', u_id,(select b.user_name from sys_user b where b.user_id =u_id) as 'user_name', tabs, content, status, score, create_time, praise_count from product_comment
+        <where>
+            <if test="pId != null "> and p_id = #{pId}</if>
+            <if test="uId != null "> and u_id = #{uId}</if>
+            <if test="tabs != null  and tabs != ''"> and tabs  like   concat('%', #{tabs},'%')</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="score != null  and score != ''"> and score = #{score}</if>
+            <if test="createTime != null "> and create_time LIKE concat('%',  CONVERT(#{createTime},date), '%')</if>
+            <if test="praiseCount != null "> and praise_count = #{praiseCount}</if>
+        </where>
+    </select>
+
+    <select id="selectProductCommentByComId" parameterType="Long" resultMap="ProductCommentResult">
+        <include refid="selectProductCommentVo"/>
+        where com_id = #{comId}
+    </select>
+
+
+
+
+    <select id="selectProductCommentByPidHot" parameterType="Long" resultMap="CommentEntityResult">
+        SELECT
+            c.com_id as'cid',
+            s.user_id as 'uid',
+            s.sex as 'sex',
+                s.nick_name as 'nick_name',
+                s.avatar as 'avatar',
+                c.tabs as 'tabs',
+
+                c.score,
+            c.content as 'content',
+                0 as 'official_reply',
+                c.praise_count as 'praise_count',
+                c.create_time as 'create_time'
+        FROM
+            product_comment c,
+            sys_user s
+        WHERE
+            c.status = 1
+          AND c.u_id = s.user_id and c.p_id = #{id}  order by c.praise_count desc
+
+
+    </select>
+
+
+
+    <select id="selectProductCommentByPid" parameterType="Long" resultMap="CommentEntityResult">
+        SELECT
+            c.com_id as'cid',
+                s.user_id as 'uid',
+              s.sex as 'sex',
+            s.nick_name as 'nick_name',
+                s.avatar as 'avatar',
+                c.tabs as 'tabs',
+
+        c.score,
+                c.content as 'content',
+                0 as 'official_reply',
+                c.praise_count as 'praise_count',
+                c.create_time as 'create_time'
+        FROM
+            product_comment c,
+            sys_user s
+        WHERE
+            c.status = 1
+          AND c.u_id = s.user_id and c.p_id = #{id}  order by c.create_time desc
+
+
+    </select>
+
+
+    <select id="selectCommByUIdAndComId" resultType="java.lang.Integer">
+        select count(0) from     comment_post where  user_id = #{uid} and com_id = #{cid}
+    </select>
+
+    <insert id="insertProductComment" parameterType="ProductComment" useGeneratedKeys="true" keyProperty="comId">
+        insert into product_comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="parentId != null">parent_id,</if>
+            <if test="pId != null">p_id,</if>
+            <if test="uId != null">u_id,</if>
+            <if test="tabs != null and tabs != ''">tabs,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="status != null">status,</if>
+            <if test="score != null">score,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="praiseCount != null">praise_count,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="parentId != null">#{parentId},</if>
+            <if test="pId != null">#{pId},</if>
+            <if test="uId != null">#{uId},</if>
+            <if test="tabs != null and tabs != ''">#{tabs},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="status != null">#{status},</if>
+            <if test="score != null">#{score},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="praiseCount != null">#{praiseCount},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProductComment" parameterType="ProductComment">
+        update product_comment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="pId != null">p_id = #{pId},</if>
+            <if test="uId != null">u_id = #{uId},</if>
+            <if test="tabs != null and tabs != ''">tabs = #{tabs},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="score != null">score = #{score},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="praiseCount != null">praise_count = #{praiseCount},</if>
+        </trim>
+        where com_id = #{comId}
+    </update>
+    <update id="userIpComment">
+        update product_comment  set  praise_count = praise_count+1 where com_id = #{id}
+    </update>
+    <update id="userSubComment">
+        update product_comment  set  praise_count = praise_count-1 where com_id = #{id}
+    </update>
+
+    <delete id="deleteProductCommentByComId" parameterType="Long">
+        delete from product_comment where com_id = #{comId}
+    </delete>
+
+    <delete id="deleteProductCommentByComIds" parameterType="String">
+        delete from product_comment where com_id in
+        <foreach item="comId" collection="array" open="(" separator="," close=")">
+            #{comId}
+        </foreach>
+    </delete>
+</mapper>

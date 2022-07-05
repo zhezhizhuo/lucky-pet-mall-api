@@ -29,18 +29,7 @@
             <artifactId>aliyun-sdk-oss</artifactId>
             <version>3.10.2</version>
         </dependency>
-        <!-- swagger3-->
-<!--        <dependency>-->
-<!--            <groupId>io.springfox</groupId>-->
-<!--            <artifactId>springfox-boot-starter</artifactId>-->
-<!--        </dependency>-->
 
-        <!-- 防止进入swagger页面报类型转换错误，排除3.0.0中的引用，手动增加1.6.2版本 -->
-<!--        <dependency>-->
-<!--            <groupId>io.swagger</groupId>-->
-<!--            <artifactId>swagger-models</artifactId>-->
-<!--            <version>1.6.2</version>-->
-<!--        </dependency>-->
 
          <!-- Mysql驱动包 -->
         <dependency>
@@ -76,10 +65,23 @@
             <groupId>com.lucky.pet</groupId>
             <artifactId>lucky-pet-mall-category</artifactId>
         </dependency>
+        <!-- 商品模块-->
+        <dependency>
+            <groupId>com.lucky.pet</groupId>
+            <artifactId>luck-pet-mall-product</artifactId>
+        </dependency>
         <!-- 主页模块-->
         <dependency>
             <groupId>com.lucky.pet</groupId>
             <artifactId>lucky-pet-mall-home</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.lucky.pet</groupId>
+            <artifactId>luck-pet-mall-address</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.lucky.pet</groupId>
+            <artifactId>luck-pet-mall-collects</artifactId>
         </dependency>
 
     </dependencies>

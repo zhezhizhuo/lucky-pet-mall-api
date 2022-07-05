@@ -57,7 +57,6 @@ public class ${ClassName}Controller extends BaseController {
      */
     @ApiOperation(value = "查询${functionName}列表")
     @PreAuthorize("@ss.hasPermi('${permissionPrefix}:list')")
-    @ApiOperationSupport(includeParameters = {"createBy","createTime","updateTime","total","searchValue",})
     @GetMapping("/list")
     #if($table.crud || $table.sub)
     public TableDataInfo list(${ClassName} ${className}) {
@@ -123,10 +122,12 @@ public class ${ClassName}Controller extends BaseController {
      * 删除${functionName}
      */
     @ApiOperation(value = "删除${functionName}")
+    @ApiImplicitParam(name ="${pkColumn.javaField}s",dataTypeClass=List.class,value = "商品分类id 要求数组")
+
     @PreAuthorize("@ss.hasPermi('${permissionPrefix}:remove')")
     @Log(title = "${functionName}", businessType = BusinessType.DELETE)
     @DeleteMapping("/{${pkColumn.javaField}s}")
-    public AjaxResult remove(@PathVariable ${pkColumn.javaType}[] ${pkColumn.javaField}s) {
+    public AjaxResult remove( @PathVariable ${pkColumn.javaType}[] ${pkColumn.javaField}s) {
         return toAjax(${className}Service.delete${ClassName}By${pkColumn.capJavaField}s(${pkColumn.javaField}s));
     }
 }

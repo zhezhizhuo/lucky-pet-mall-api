@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.lucky.pet.common.core.domain.TreeSelect;
 import com.lucky.pet.common.core.domain.entity.ProductCategory;
+import com.lucky.pet.common.core.domain.vo.CategoryOv;
 
 /**
  * 商品类目Service接口
@@ -62,4 +63,14 @@ public interface IProductCategoryService
     public int deleteProductCategoryByCategoryId(Long categoryId);
 
     List<TreeSelect> buildCategoryTreeSelect(List<ProductCategory> categories);
+
+    /**
+     * 获取uniapp 九宫格数据
+     * @return
+     */
+    List<ProductCategory> selectCategoryNineHouseGridList();
+
+    List<CategoryOv> selectHomeProductCategoryList();
+
+    List<CategoryOv> selectHomeProductCategoryListTop();
 }

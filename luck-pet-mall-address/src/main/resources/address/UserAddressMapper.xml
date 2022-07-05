@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lucky.pet.address.mapper.UserAddressMapper">
+
+    <resultMap type="UserAddress" id="UserAddressResult">
+        <result property="id"    column="id"    />
+        <result property="uid"    column="uid"    />
+        <result property="name"    column="name"    />
+        <result property="provinceName"    column="province_name"    />
+        <result property="provinceCode"    column="province_code"    />
+        <result property="citiyName"    column="citiy_name"    />
+        <result property="areanName"    column="arean_name"    />
+        <result property="zip"    column="zip"    />
+        <result property="address"    column="address"    />
+        <result property="phone"    column="phone"    />
+        <result property="tab"    column="tab"    />
+        <result property="isDefault"    column="is_default"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectUserAddressVo">
+        select id, uid, name, province_name, province_code, citiy_name, arean_name, zip, address, phone, tab, is_default, create_time, update_time from user_address
+    </sql>
+
+    <select id="selectUserAddressList" parameterType="UserAddress" resultMap="UserAddressResult">
+        <include refid="selectUserAddressVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="provinceName != null  and provinceName != ''"> and province_name like concat('%', #{provinceName}, '%')</if>
+            <if test="citiyName != null  and citiyName != ''"> and citiy_name like concat('%', #{citiyName}, '%')</if>
+            <if test="areanName != null  and areanName != ''"> and arean_name like concat('%', #{areanName}, '%')</if>
+            <if test="isDefault != null  and isDefault != ''"> and is_default = #{isDefault}</if>
+        </where>
+    </select>
+
+    <select id="selectUserAddressById" parameterType="Long" resultMap="UserAddressResult">
+        <include refid="selectUserAddressVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectUserADdresByUser"  parameterType="Long" resultMap="UserAddressResult">
+        <include refid="selectUserAddressVo"/>
+        where    uid = #{userId}
+    </select>
+
+    <insert id="insertUserAddress" parameterType="UserAddress" useGeneratedKeys="true" keyProperty="id">
+        insert into user_address
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null">uid,</if>
+            <if test="name != null">name,</if>
+            <if test="provinceName != null">province_name,</if>
+            <if test="provinceCode != null">province_code,</if>
+            <if test="citiyName != null">citiy_name,</if>
+            <if test="areanName != null">arean_name,</if>
+            <if test="zip != null">zip,</if>
+            <if test="address != null">address,</if>
+            <if test="phone != null">phone,</if>
+            <if test="tab != null">tab,</if>
+            <if test="isDefault != null">is_default,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null">#{uid},</if>
+            <if test="name != null">#{name},</if>
+            <if test="provinceName != null">#{provinceName},</if>
+            <if test="provinceCode != null">#{provinceCode},</if>
+            <if test="citiyName != null">#{citiyName},</if>
+            <if test="areanName != null">#{areanName},</if>
+            <if test="zip != null">#{zip},</if>
+            <if test="address != null">#{address},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="tab != null">#{tab},</if>
+            <if test="isDefault != null">#{isDefault},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUserAddress" parameterType="UserAddress">
+        update user_address
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="provinceName != null">province_name = #{provinceName},</if>
+            <if test="provinceCode != null">province_code = #{provinceCode},</if>
+            <if test="citiyName != null">citiy_name = #{citiyName},</if>
+            <if test="areanName != null">arean_name = #{areanName},</if>
+            <if test="zip != null">zip = #{zip},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="tab != null">tab = #{tab},</if>
+            <if test="isDefault != null">is_default = #{isDefault},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+    <update id="setUserAddresIsNotDefault">
+        update           user_address set     is_default= 1 where       uid = #{userId}
+    </update>
+    <update id="updateAddressSetDefualt">
+        update           user_address set     is_default= 0 where       id = #{userId}
+
+    </update>
+
+    <delete id="deleteUserAddressById" parameterType="Long">
+        delete from user_address where id = #{id}
+    </delete>
+
+    <delete id="deleteUserAddressByIds" parameterType="String">
+        delete from user_address where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

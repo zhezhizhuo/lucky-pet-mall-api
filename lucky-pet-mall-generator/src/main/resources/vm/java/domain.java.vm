@@ -25,7 +25,7 @@ import com.lucky.pet.common.core.domain.TreeEntity;
 #elseif($table.tree)
 #set($Entity="TreeEntity")
 #end
-@ApiModel("${functionName}")
+@ApiModel(value="${functionName}",description =" ${tableName}")
 public class ${ClassName} extends ${Entity}
 {
     private static final long serialVersionUID = 1L;
@@ -42,17 +42,17 @@ public class ${ClassName} extends ${Entity}
 #end
 #if($parentheseIndex != -1)
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
-    @ApiModelProperty("${comment}")
+    @ApiModelProperty(value ="${comment}",required=true)
 #elseif($column.javaType == 'Date')
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "${comment}", width = 30, dateFormat = "yyyy-MM-dd")
-        @ApiModelProperty("${comment}")
-    @ApiModelProperty("${comment}")
+         @ApiModelProperty(value ="${comment}",required=true)
+     @ApiModelProperty(value ="${comment}",required=true)
 #else
     @Excel(name = "${comment}")
 #end
 #end
-    @ApiModelProperty("${comment}")
+     @ApiModelProperty(value ="${comment}",required=true)
     private $column.javaType $column.javaField;
 
 #end

@@ -10,7 +10,6 @@ import io.swagger.annotations.ApiModel;
  *
  * @author qgj
  */
-@ApiModel("全局返回体")
 public class AjaxResult extends HashMap<String, Object>
 {
     private static final long serialVersionUID = 1L;
