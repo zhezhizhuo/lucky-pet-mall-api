@@ -2,6 +2,7 @@ package com.lucky.pet.common.core.domain.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.stereotype.Component;
 
 /**
  * 用户登录对象
@@ -9,6 +10,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author qgj
  */
 @ApiModel(value = "登陆数据模型")
+@Component
 public class LoginBody
 {
     /**
@@ -34,6 +36,16 @@ public class LoginBody
      */
     @ApiModelProperty(value = "唯一标识")
     private String uuid;
+
+    public LoginBody() {
+    }
+
+    public LoginBody(String username, String password, String code, String uuid) {
+        this.username = username;
+        this.password = password;
+        this.code = code;
+        this.uuid = uuid;
+    }
 
     public String getUsername()
     {

@@ -3,6 +3,7 @@ package com.lucky.pet.web.controller.system;
 import java.util.List;
 import java.util.Set;
 
+import com.lucky.pet.common.core.domain.model.LoginBody;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +14,6 @@ import com.lucky.pet.common.constant.Constants;
 import com.lucky.pet.common.core.domain.AjaxResult;
 import com.lucky.pet.common.core.domain.entity.SysMenu;
 import com.lucky.pet.common.core.domain.entity.SysUser;
-import com.lucky.pet.common.core.domain.model.LoginBody;
 import com.lucky.pet.common.utils.SecurityUtils;
 import com.lucky.pet.framework.web.service.SysLoginService;
 import com.lucky.pet.framework.web.service.SysPermissionService;
