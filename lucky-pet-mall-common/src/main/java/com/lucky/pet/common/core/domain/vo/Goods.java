@@ -20,6 +20,9 @@ public class Goods implements Serializable {
 
         private BigDecimal price;
 
+        private BigDecimal oldPrice;
+        private String childrenPic;
+
         public Goods() {
         }
 
@@ -30,6 +33,8 @@ public class Goods implements Serializable {
                 this.desc = product.getDescript();
                 this.picture = product.getPicture();
                 this.price = product.getPrice();
+                this.oldPrice = product.getOldPrice();
+                this.childrenPic = product.getChildrenPic();
 //                this.count = product.getCount();
         }
 
@@ -81,5 +86,21 @@ public class Goods implements Serializable {
 
         public void setCount(Long count) {
                 this.count = count;
+        }
+
+        public BigDecimal getOldPrice() {
+                return oldPrice;
+        }
+
+        public void setOldPrice(BigDecimal oldPrice) {
+                this.oldPrice = oldPrice;
+        }
+
+        public String getChildrenPic() {
+                return childrenPic;
+        }
+
+        public void setChildrenPic(String childrenPic) {
+                this.childrenPic = childrenPic;
         }
 }

@@ -16,6 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createTime"    column="create_time"    />
         <result property="isDelete"    column="is_delete"    />
         <result property="picture"    column="picture"    />
+        <result property="childrenPic"    column="childrenPic"    />
     </resultMap>
 
     <sql id="selectProductInfoVo">
@@ -98,8 +99,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="selectProductListByCategoryId" parameterType="Long" resultMap="ProductInfoResult">
-        <include refid="selectProductInfoVo"/>
-        where p_status = 0 and category_id = #{id}
+        select product_id, product_name, price, old_price, p_status, descript, category_name, category_id, create_time, is_delete, picture,(select a.img from product_image a where a.product_id =product_id limit 0,1) as 'childrenPic' from product_info
+        where p_status = 0 and category_id =  #{id}
     </select>
 
     <insert id="insertProductInfo" parameterType="ProductInfo" useGeneratedKeys="true" keyProperty="productId">

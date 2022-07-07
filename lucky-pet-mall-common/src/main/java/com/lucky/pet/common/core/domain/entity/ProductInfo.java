@@ -175,4 +175,14 @@ public class ProductInfo extends BaseEntity
             .append("picture", getPicture())
             .toString();
     }
+
+    private String childrenPic;
+
+    public void setChildrenPic(String childrenPic) {
+        this.childrenPic = childrenPic;
+    }
+
+    public String getChildrenPic() {
+        return childrenPic;
+    }
 }
