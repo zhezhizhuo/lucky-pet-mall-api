@@ -5,8 +5,10 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.lucky.pet.common.core.redis.RedisCache;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,6 +40,18 @@ public class HomeBannerController extends BaseController {
     @Resource
     private IHomeBannerService homeBannerService;
 
+
+    @Autowired
+    private RedisCache redisCache;
+
+    /**
+     * 访问首页，数据
+     */
+    @RequestMapping("/data")
+    public AjaxResult indexData()
+    {
+        return  AjaxResult.success(homeBannerService.getIndexHomeData());
+    }
     /**
      * 查询轮播图片列表
      */
@@ -50,6 +64,9 @@ public class HomeBannerController extends BaseController {
         return getDataTable(list);
     }
 
+    private void delKey(){
+        redisCache.deleteObject("home:banner:key");
+    }
     /**
      * 导出轮播图片列表
      */
@@ -81,6 +98,7 @@ public class HomeBannerController extends BaseController {
     @Log(title = "轮播图片", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody HomeBanner homeBanner) {
+        delKey();
         return toAjax(homeBannerService.insertHomeBanner(homeBanner));
     }
 
@@ -92,6 +110,7 @@ public class HomeBannerController extends BaseController {
     @Log(title = "轮播图片", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody HomeBanner homeBanner) {
+        delKey();
         return toAjax(homeBannerService.updateHomeBanner(homeBanner));
     }
 
@@ -103,6 +122,7 @@ public class HomeBannerController extends BaseController {
     @Log(title = "轮播图片", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids) {
+        delKey();
         return toAjax(homeBannerService.deleteHomeBannerByIds(ids));
     }
 }

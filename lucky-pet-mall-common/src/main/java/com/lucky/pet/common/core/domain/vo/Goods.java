@@ -5,6 +5,9 @@ import com.lucky.pet.common.core.domain.entity.ProductInfo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+/**
+ * @author 24556
+ */
 public class Goods implements Serializable {
 
 

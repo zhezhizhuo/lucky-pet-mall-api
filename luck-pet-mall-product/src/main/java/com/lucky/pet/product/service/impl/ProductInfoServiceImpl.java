@@ -1,9 +1,11 @@
 package com.lucky.pet.product.service.impl;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.lucky.pet.common.core.domain.entity.ProductCategory;
 import com.lucky.pet.common.core.domain.entity.ProductImage;
 import com.lucky.pet.common.core.domain.vo.*;
 import com.lucky.pet.common.utils.DateUtils;
@@ -148,6 +150,85 @@ public class ProductInfoServiceImpl implements IProductInfoService
             return commentEntities;
         }
     }
+
+    @Override
+    public List<CategoryTreeOv> buildCategoryGoods() {
+        List<ProductCategory> categories = selectCategoryHead();
+
+        return   buildCategoryGoodsList(categories).stream().map(CategoryTreeOv::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public ProductInfo selectProductByProductId(Long productId) {
+        ProductInfo product = productInfoMapper.selectProductInfoByProductId(productId);
+//        product.setMainPictures(getMainPictures(product.getProductId()));
+//        product.
+        return  product;
+    }
+
+    private    List<ProductCategory>  buildCategoryGoodsList(List<ProductCategory> categorys) {
+        List<ProductCategory> returns = new ArrayList<>();
+        List<Long> temp = new ArrayList<Long>();
+        for (ProductCategory categoryBean : categorys)
+        {
+            temp.add(categoryBean.getCategoryId());
+        }
+        for (Iterator<ProductCategory> iterator = categorys.iterator(); iterator.hasNext();)
+        {
+            ProductCategory categoryBean = (ProductCategory) iterator.next();
+
+            // 如果是顶级节点, 遍历该父节点的所有子节点
+            if (!temp.contains(Long.valueOf(categoryBean.getParentId())))
+            {
+                categoryBean.setGoods(getGoods(categoryBean.getCategoryId()));
+                recursionFn(categorys, categoryBean);
+                returns.add(categoryBean);
+            }
+        }
+        if (returns.isEmpty())
+        {
+            returns = categorys;
+        }
+        return returns;
+    }
+
+    private List<ProductCategory> recursionFn(List<ProductCategory> categorys, ProductCategory categoryBean) {
+        List<ProductCategory> childList=      getChildList(categorys, categoryBean);
+        categoryBean.setChildren(childList);
+
+        for (ProductCategory bean : childList) {
+            if(hasChild(childList,bean)){
+                recursionFn(categorys,bean);
+            }
+        }
+        return childList;
+    }
+    private boolean hasChild(List<ProductCategory> childList, ProductCategory bean) {
+        return getChildList(childList, bean).size() > 0;
+    }
+
+    private List<ProductCategory> getChildList(List<ProductCategory> categorys, ProductCategory categoryBean) {
+        List<ProductCategory> tlist = new ArrayList<ProductCategory>();
+        Iterator<ProductCategory> it = categorys.iterator();
+        while (it.hasNext())
+        {
+            ProductCategory n = (ProductCategory) it.next();
+            if (Long.valueOf(n.getParentId()) == categoryBean.getCategoryId().longValue())
+
+            {
+                tlist.add(n);
+            }
+        }
+        return tlist;
+    }
+    private List<Goods> getGoods(Long categoryId) {
+        return   productInfoMapper.selectProductListByCategoryId(categoryId).stream().map(Goods::new).collect(Collectors.toList());
+    }
+
+    private List<ProductCategory> selectCategoryHead() {
+        return productInfoMapper.selectCategoryHead();
+    }
+
     @Override
     public GoodsOv selectProductInfoById(Long id,Long userId) {
 

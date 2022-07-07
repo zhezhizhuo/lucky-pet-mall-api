@@ -1,6 +1,7 @@
 package com.lucky.pet.home.mapper;
 import java.util.List;
 import com.lucky.pet.common.core.domain.entity.HomeBanner;
+import com.lucky.pet.common.core.domain.vo.IndexCountOV;
 import com.lucky.pet.common.core.domain.vo.PcBanner;
 
 /**
@@ -61,4 +62,6 @@ public interface HomeBannerMapper
     public int deleteHomeBannerByIds(Long[] ids);
 
     List<PcBanner> getBanner();
+
+    IndexCountOV getIndexHomeData();
 }

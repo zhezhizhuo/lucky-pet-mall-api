@@ -1,7 +1,10 @@
 package com.lucky.pet.web.controller.system;
 
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.lucky.pet.web.core.config.AsyncConfig;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,7 +37,8 @@ import javax.annotation.Resource;
  * @author qgj
  */
 @RestController
-@Api("个人信息 业务处理")
+@Api(tags = "个人信息 业务处理")
+@ApiSort(6)
 @RequestMapping("/system/user/profile")
 public class SysProfileController extends BaseController
 {
@@ -62,6 +66,7 @@ public class SysProfileController extends BaseController
      * 修改用户
      */
     @Log(title = "个人信息", businessType = BusinessType.UPDATE)
+    @ApiOperation(value = "修改个人信息")
     @PutMapping
     public AjaxResult updateProfile(@RequestBody SysUser user)
     {
@@ -97,8 +102,9 @@ public class SysProfileController extends BaseController
      * 重置密码
      */
     @Log(title = "个人信息", businessType = BusinessType.UPDATE)
+    @ApiOperation(value = "重置密码")
     @PutMapping("/updatePwd")
-    public AjaxResult updatePwd(String oldPassword, String newPassword)
+    public AjaxResult updatePwd( String oldPassword, String newPassword)
     {
         LoginUser loginUser = getLoginUser();
         String userName = loginUser.getUsername();
@@ -129,8 +135,9 @@ public class SysProfileController extends BaseController
      * 头像上传
      */
     @Log(title = "用户头像", businessType = BusinessType.UPDATE)
+    @ApiOperation(value = "修改用户头像")
     @PostMapping("/avatar")
-    public AjaxResult avatar(@RequestParam("avatarfile") MultipartFile file) throws Exception
+    public AjaxResult avatar(@RequestParam("avatarfile") @ApiParam MultipartFile file) throws Exception
     {
         if (!file.isEmpty())
         {

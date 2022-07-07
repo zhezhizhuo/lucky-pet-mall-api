@@ -2,6 +2,7 @@ package com.lucky.pet.home.service.impl;
 
 import java.util.List;
 
+import com.lucky.pet.common.core.domain.vo.IndexCountOV;
 import com.lucky.pet.common.core.domain.vo.PcBanner;
 import com.lucky.pet.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,11 @@ public class HomeBannerServiceImpl implements IHomeBannerService
 {
     @Autowired
     private HomeBannerMapper homeBannerMapper;
+
+    @Override
+    public IndexCountOV getIndexHomeData() {
+        return this.homeBannerMapper.getIndexHomeData();
+    }
 
     /**
      * 查询轮播图片

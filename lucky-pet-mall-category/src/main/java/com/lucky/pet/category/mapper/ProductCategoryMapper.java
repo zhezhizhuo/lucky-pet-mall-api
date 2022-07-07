@@ -2,6 +2,7 @@ package com.lucky.pet.category.mapper;
 import java.util.List;
 import com.lucky.pet.common.core.domain.entity.ProductCategory;
 import com.lucky.pet.common.core.domain.vo.CategoryOv;
+import com.lucky.pet.common.core.domain.vo.ChartOv;
 
 /**
  * 商品类目Mapper接口
@@ -68,4 +69,6 @@ public interface ProductCategoryMapper
     List<CategoryOv> selectHomeProductCategoryList();
 
     List<CategoryOv> selectHomeProductCategoryListTop();
+
+    List<ChartOv> getCharData();
 }

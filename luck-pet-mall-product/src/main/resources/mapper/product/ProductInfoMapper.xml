@@ -91,6 +91,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select  c.category_id as 'id',c.category_name as 'name' from product_category c where c.category_id = #{id};
     </select>
 
+    <select id="selectCategoryHead" resultType="com.lucky.pet.common.core.domain.entity.ProductCategory">
+        select category_id, category_name, parent_id, sort, p_status, picture, update_time, create_time, total from product_category
+        where p_status = 0
+        order by sort
+    </select>
+
+    <select id="selectProductListByCategoryId" parameterType="Long" resultMap="ProductInfoResult">
+        <include refid="selectProductInfoVo"/>
+        where p_status = 0 and category_id = #{id}
+    </select>
+
     <insert id="insertProductInfo" parameterType="ProductInfo" useGeneratedKeys="true" keyProperty="productId">
         insert into product_info
         <trim prefix="(" suffix=")" suffixOverrides=",">

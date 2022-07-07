@@ -19,7 +19,7 @@ public class RegisterOv implements Serializable {
 
     @ApiModelProperty(required = true,value = "用户名")
     @NotNull(message =  "用户名不能空")
-    @DecimalMin(value = "3",message = "用户名最长度不少于3位")
+//    @DecimalMin(value = "3",message = "用户名最长度不少于3位")
     private String username;
 
 
@@ -52,7 +52,7 @@ public class RegisterOv implements Serializable {
     @NotNull(message =  "用户性别不能空")
     private Integer sex;
     @NotNull(message =  "密码不能为空")
-    @DecimalMin(value = "6",message = "密码最长度不少于6位")
+//    @DecimalMin(value = "6",message = "密码长度度不少于6位")
     @ApiModelProperty(required = true,value = "密码")
     private String password;
 

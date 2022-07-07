@@ -2,6 +2,7 @@ package com.lucky.pet.home.service;
 
 import java.util.List;
 import com.lucky.pet.common.core.domain.entity.HomeBanner;
+import com.lucky.pet.common.core.domain.vo.IndexCountOV;
 import com.lucky.pet.common.core.domain.vo.PcBanner;
 
 /**
@@ -27,7 +28,7 @@ public interface IHomeBannerService
      * @return 轮播图片集合
      */
     public List<HomeBanner> selectHomeBannerList(HomeBanner homeBanner);
-
+    public IndexCountOV getIndexHomeData();
     /**
      * 新增轮播图片
      *

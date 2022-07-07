@@ -79,4 +79,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="getBanner" resultType="com.lucky.pet.common.core.domain.vo.PcBanner" useCache="true">
         select  pid, hrefUrl, imgUrl   from home_banner order by sort
     </select>
+    <select id="getIndexHomeData" resultType="com.lucky.pet.common.core.domain.vo.IndexCountOV">
+        SELECT a.id AS 'userCount',( SELECT count(0) FROM sys_notice ) AS 'noticeCount', ( SELECT sum(o.total_amount) FROM master_order o ) AS 'priceSum', ( SELECT count(0) FROM master_order o ) AS 'orderCount'
+        FROM (SELECT count(0) AS 'id' FROM sys_user) a;
+    </select>
 </mapper>

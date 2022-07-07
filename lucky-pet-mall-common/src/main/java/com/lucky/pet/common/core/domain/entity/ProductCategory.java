@@ -1,6 +1,7 @@
 package com.lucky.pet.common.core.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.lucky.pet.common.core.domain.vo.Goods;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import io.swagger.annotations.ApiModel;
@@ -79,6 +80,16 @@ public class ProductCategory {
 
     public void setChildren(List<ProductCategory> children) {
         this.children = children;
+    }
+
+    private List<Goods> goods;
+
+    public void setGoods(List<Goods> goods) {
+        this.goods = goods;
+    }
+
+    public List<Goods> getGoods() {
+        return goods;
     }
 
     /**

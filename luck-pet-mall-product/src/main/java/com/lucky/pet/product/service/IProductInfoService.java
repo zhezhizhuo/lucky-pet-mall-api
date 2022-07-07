@@ -2,6 +2,7 @@ package com.lucky.pet.product.service;
 
 import java.util.List;
 import com.lucky.pet.common.core.domain.entity.ProductInfo;
+import com.lucky.pet.common.core.domain.vo.CategoryTreeOv;
 import com.lucky.pet.common.core.domain.vo.CommentOv;
 import com.lucky.pet.common.core.domain.vo.GoodsOv;
 import com.lucky.pet.common.core.domain.vo.ListImagesOv;
@@ -73,4 +74,8 @@ public interface IProductInfoService
     List<CommentOv> selectProductCommentByPid(Long id);
 
     List<CommentOv> selectProductCommentByPidHot(Long id);
+
+    List<CategoryTreeOv> buildCategoryGoods();
+
+    ProductInfo selectProductByProductId(Long valueOf);
 }

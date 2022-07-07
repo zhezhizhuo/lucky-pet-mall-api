@@ -4,16 +4,22 @@ import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import com.lucky.pet.category.service.IProductCategoryService;
 import com.lucky.pet.common.core.controller.BaseController;
 import com.lucky.pet.common.core.domain.AjaxResult;
+import com.lucky.pet.common.core.domain.vo.PcBanner;
+import com.lucky.pet.common.core.redis.RedisCache;
+import com.lucky.pet.common.utils.StringUtils;
 import com.lucky.pet.home.service.IHomeBannerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author zhiZhou
@@ -33,8 +39,10 @@ public class HomeController extends BaseController {
     @Resource
     private IProductCategoryService categoryService;
 
+    @Autowired
+    private RedisCache redisCache;
 
-
+            private  final  String BANNER_KEY ="home:banner:key" ;
     /**
      *  首页轮播图
      * @return
@@ -42,7 +50,17 @@ public class HomeController extends BaseController {
     @ApiOperation(value = "首页轮播图")
     @GetMapping("/carousel")
     public AjaxResult getBanner(){
-        return AjaxResult.success(bannerService.getPcBanner());
+        //先查Redis
+        List<PcBanner> cache = redisCache.getCacheObject(BANNER_KEY);
+        logger.error("cache ==",cache);
+        if (cache ==null || cache.size() == 0 ){
+            //redis 空了 查询数据库
+            List<PcBanner> pcBanner = bannerService.getPcBanner();
+            redisCache.setCacheObject(BANNER_KEY,pcBanner,30, TimeUnit.HOURS);
+            return AjaxResult.success(pcBanner);
+        }
+        return AjaxResult.success(cache);
+
     }
 
     /**
@@ -70,4 +88,5 @@ public class HomeController extends BaseController {
     public AjaxResult getCategoryTop(){
         return AjaxResult.success(categoryService.selectHomeProductCategoryListTop());
     }
+
 }

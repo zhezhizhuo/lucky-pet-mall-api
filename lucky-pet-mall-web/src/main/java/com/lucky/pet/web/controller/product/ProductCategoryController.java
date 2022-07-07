@@ -49,6 +49,13 @@ public class ProductCategoryController extends BaseController {
         return AjaxResult.success(list);
     }
 
+    @PreAuthorize("@ss.hasPermi('category:category:edit')")
+    @Log(title = "获取每个分类占比的数据", businessType = BusinessType.UPDATE)
+    @GetMapping("chart")
+    public AjaxResult chartData(){
+        return AjaxResult.success(productCategoryService.getCharData());
+    }
+
     /**
      * 获取商品类目的下拉树列表
      */

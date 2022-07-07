@@ -83,7 +83,10 @@
             <groupId>com.lucky.pet</groupId>
             <artifactId>luck-pet-mall-collects</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.lucky.pet</groupId>
+            <artifactId>lucky-pet-mall-api-cart</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

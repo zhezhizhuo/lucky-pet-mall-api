@@ -1,12 +1,14 @@
 package com.lucky.pet.product.mapper;
 import java.util.List;
 
+import com.lucky.pet.common.core.domain.entity.ProductCategory;
 import com.lucky.pet.common.core.domain.entity.ProductImage;
 import com.lucky.pet.common.core.domain.entity.ProductInfo;
 import com.lucky.pet.common.core.domain.vo.CategorysOv;
 import com.lucky.pet.common.core.domain.vo.GoodsHotOv;
 import com.lucky.pet.common.core.domain.vo.GoodsOv;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.PropertyValues;
 
 /**
  * 商品信息Mapper接口
@@ -49,6 +51,7 @@ public interface ProductInfoMapper
      */
     public int updateProductInfo(ProductInfo productInfo);
 
+
     /**
      * 删除商品信息
      *
@@ -79,4 +82,8 @@ public interface ProductInfoMapper
     CategorysOv selectProductParent(Long id);
 
     CategorysOv selectCategorParent(String parent);
+
+    List<ProductCategory> selectCategoryHead();
+
+    List<ProductInfo> selectProductListByCategoryId(Long categoryId);
 }

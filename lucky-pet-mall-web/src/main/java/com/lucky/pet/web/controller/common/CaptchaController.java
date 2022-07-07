@@ -42,7 +42,6 @@ public class CaptchaController
     /**
      * 生成验证码
      */
-    @ApiOperation(value = "获取图形验证码")
     @GetMapping("/captchaImage")
     public AjaxResult getCode(HttpServletResponse response) throws IOException
     {

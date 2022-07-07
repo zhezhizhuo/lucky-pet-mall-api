@@ -5,6 +5,7 @@ import java.util.List;
 import com.lucky.pet.common.core.domain.TreeSelect;
 import com.lucky.pet.common.core.domain.entity.ProductCategory;
 import com.lucky.pet.common.core.domain.vo.CategoryOv;
+import com.lucky.pet.common.core.domain.vo.ChartOv;
 
 /**
  * 商品类目Service接口
@@ -73,4 +74,6 @@ public interface IProductCategoryService
     List<CategoryOv> selectHomeProductCategoryList();
 
     List<CategoryOv> selectHomeProductCategoryListTop();
+
+    List<ChartOv> getCharData();
 }

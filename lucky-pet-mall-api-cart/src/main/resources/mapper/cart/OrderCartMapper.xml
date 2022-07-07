@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lucky.pet.cart.mapper.OrderCartMapper">
+
+    <resultMap type="OrderCart" id="OrderCartResult">
+        <result property="id"    column="id"    />
+        <result property="uId"    column="u_id"    />
+        <result property="pId"    column="p_id"    />
+        <result property="count"    column="count"    />
+        <result property="price"    column="price"    />
+        <result property="addTime"    column="add_time"    />
+        <result property="isDelete"    column="is_delete"    />
+    </resultMap>
+
+    <sql id="selectOrderCartVo">
+        select id, u_id, p_id, count, price, add_time, is_delete from order_cart
+    </sql>
+    <update id="updateUserCarDel">
+        update order_cart set is_delete = 1 where id in(
+            <foreach item="item" separator="," collection="list">
+                #{item}
+            </foreach>
+            )
+    </update>
+    <select id="selectOrderCartList" parameterType="OrderCart" resultMap="OrderCartResult">
+        <include refid="selectOrderCartVo"/>
+        <where>
+            <if test="uId != null "> and u_id = #{uId}</if>
+            <if test="pId != null "> and p_id = #{pId}</if>
+            <if test="count != null "> and count = #{count}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="addTime != null "> and add_time = #{addTime}</if>
+            <if test="isDelete != null "> and is_delete = #{isDelete}</if>
+        </where>
+    </select>
+
+    <select id="selectOrderCartById" parameterType="Long" resultMap="OrderCartResult">
+        <include refid="selectOrderCartVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectCarByUserId"  parameterType="Long" resultType="com.lucky.pet.common.core.domain.vo.UserCartOv">
+        SELECT
+            c.id as 'cid',
+            p.product_name AS 'name',
+                p.price,
+            p.product_id as 'id',
+            p.price AS 'nowPrice',
+                p.picture,
+            c.count,
+            (
+                SELECT
+                    if(ISNULL(s.col_id),'false','true')
+                FROM
+                    user_collects s
+                WHERE
+                    s.is_delete = 0
+                  AND s.user_id = #{userId}
+                  AND s.pid = p.product_id
+            ) AS 'collect'
+        FROM
+            order_cart c,
+            product_info p
+        WHERE
+            c.is_delete = 0
+          AND c.u_id = #{userId}
+          AND c.p_id = p.product_id;
+    </select>
+    <select id="selectUserCartCount" parameterType="Long" resultType="java.lang.Integer">
+        select count(0) from order_cart where u_id = #{id};
+    </select>
+
+    <insert id="insertOrderCart" parameterType="OrderCart" useGeneratedKeys="true" keyProperty="id">
+        insert into order_cart
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uId != null">u_id,</if>
+            <if test="pId != null">p_id,</if>
+            <if test="count != null">count,</if>
+            <if test="price != null">price,</if>
+            <if test="addTime != null">add_time,</if>
+            <if test="isDelete != null">is_delete,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uId != null">#{uId},</if>
+            <if test="pId != null">#{pId},</if>
+            <if test="count != null">#{count},</if>
+            <if test="price != null">#{price},</if>
+            <if test="addTime != null">#{addTime},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOrderCart" parameterType="OrderCart">
+        update order_cart
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uId != null">u_id = #{uId},</if>
+            <if test="pId != null">p_id = #{pId},</if>
+            <if test="count != null">count = #{count},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="addTime != null">add_time = #{addTime},</if>
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOrderCartById" parameterType="Long">
+        delete from order_cart where id = #{id}
+    </delete>
+
+    <delete id="deleteOrderCartByIds" parameterType="String">
+        delete from order_cart where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

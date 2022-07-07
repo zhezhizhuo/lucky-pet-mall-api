@@ -232,9 +232,14 @@
                 <groupId>com.lucky.pet</groupId>
                 <artifactId>luck-pet-mall-collects</artifactId>
                 <version>${lucky.pet.version}</version>
-
+            </dependency>
+            <dependency>
+                <groupId>com.lucky.pet</groupId>
+                <artifactId>lucky-pet-mall-api-cart</artifactId>
+                <version>${lucky.pet.version}</version>
             </dependency>
         </dependencies>
+
     </dependencyManagement>
 
     <modules>
@@ -249,6 +254,7 @@
         <module>luck-pet-mall-product</module>
         <module>luck-pet-mall-collects</module>
         <module>luck-pet-mall-address</module>
+        <module>lucky-pet-mall-api-cart</module>
     </modules>
     <packaging>pom</packaging>
 

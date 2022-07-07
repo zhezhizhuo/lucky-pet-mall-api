@@ -97,6 +97,10 @@
     <select id="selectHomeProductCategoryListTop" resultMap="categoryOView">
         select a.category_id as 'id', a.category_name as 'name', a.icon_pc as 'icon', b.category_id as 'id1', b.category_name as 'name1', b.icon_pc as 'icon1' from (select * from product_category where parent_id = 0 and p_status = 0) a left JOIN product_category b on a.category_id = b.parent_id order by b.sort;
     </select>
+    <select id="getCharData" resultType="com.lucky.pet.common.core.domain.vo.ChartOv">
+        select c.category_name as 'name',count(1) as 'value' from product_info i  , product_category c where c.category_id = i.category_id and c.parent_id =0 GROUP BY c.category_id limit 0,5
+
+    </select>
 
     <insert id="insertProductCategory" parameterType="ProductCategory" useGeneratedKeys="true" keyProperty="categoryId">
         insert into product_category

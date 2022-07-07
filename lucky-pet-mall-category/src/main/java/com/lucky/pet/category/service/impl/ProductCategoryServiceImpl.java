@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import com.lucky.pet.common.core.domain.TreeSelect;
 import com.lucky.pet.common.core.domain.vo.CategoryOv;
+import com.lucky.pet.common.core.domain.vo.ChartOv;
 import com.lucky.pet.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -123,6 +124,11 @@ public class ProductCategoryServiceImpl implements IProductCategoryService
     @Override
     public List<CategoryOv> selectHomeProductCategoryListTop() {
         return productCategoryMapper.selectHomeProductCategoryListTop();
+    }
+
+    @Override
+    public List<ChartOv> getCharData() {
+        return productCategoryMapper.getCharData();
     }
 
     @Override
